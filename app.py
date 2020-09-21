@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+from config.db import connect_to_mongo, close_connection_to_mongo
+from routes.users import router as users_router
 
-from models.login import login_description, login_summary, LoginForm, LoginResponse
 
 app = FastAPI()
 
@@ -10,13 +11,7 @@ def index():
     return {"Hello": "World"}
 
 
-@app.post(
-    "/login",
-    response_model=LoginResponse,
-    description=login_description,
-    summary=login_summary,
-    tags=["Users"],
-    status_code=200,
-)
-def login(form: LoginForm):
-    return {"success": True}
+app.include_router(users_router)
+
+app.add_event_handler("startup", connect_to_mongo)
+app.add_event_handler("shutdown", close_connection_to_mongo)
