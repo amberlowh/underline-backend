@@ -2,6 +2,7 @@ from config.db import get_database
 from fastapi import APIRouter
 
 from models.login import login_description, login_summary, LoginForm, LoginResponse
+import util.users as utils
 
 router = APIRouter()
 
@@ -15,4 +16,6 @@ router = APIRouter()
     status_code=200,
 )
 def login(form: LoginForm):
+    db = get_database()
+    utils.attempt_login(form, db)
     return {"success": True}
