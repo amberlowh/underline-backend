@@ -13,3 +13,10 @@ class registration_form(Users):
 
 class registration_response(BaseModel):
     user_id: str
+
+#models
+class get_user_info(Users):
+    pass
+
+class get_user_info_response(BaseModel):
+    user_id: str
