@@ -13,3 +13,6 @@ class registration_form(Users):
 
 class registration_response(BaseModel):
     user_id: str
+
+class update_form(Users):
+    pass
