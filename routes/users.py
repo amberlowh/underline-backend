@@ -1,5 +1,6 @@
 from config.db import get_database
 from fastapi import APIRouter
+from starlette.exceptions import HTTPException
 
 from models import users as models
 from docs import users as docs
@@ -32,6 +33,7 @@ async def register_user(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(user_id=user_id)
 
+
 @router.delete(
     "/users/delete",
     description=docs.registration_desc,
@@ -40,11 +42,15 @@ async def register_user(form: models.registration_form):
     status_code=204,
 )
 async def delete_user(email: str):
-    
-    #get DB Database
-    db= get_database()
 
-    #Delete User
+    # if email input is none, raise error
+    if not email:
+        raise HTTPException(status_code=400, detail="Input invalid/not present")
+
+    # get DB Database
+    db = get_database()
+
+    # Delete User
     await utils.delete_user(email, db)
 
 
