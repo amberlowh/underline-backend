@@ -19,4 +19,5 @@ class get_user_info(Users):
     pass
 
 class get_user_info_response(BaseModel):
-    user_id: str
+    user_id: str 
+    
