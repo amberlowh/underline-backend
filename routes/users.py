@@ -32,6 +32,21 @@ async def register_user(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(user_id=user_id)
 
+@router.delete(
+    "/users/delete",
+    description=docs.registration_desc,
+    summary=docs.registration_summ,
+    tags=["Users"],
+    status_code=204,
+)
+async def delete_user(email: str):
+    
+    #get DB Database
+    db= get_database()
+
+    #Delete User
+    await utils.delete_user(email, db)
+
 
 # FLOW TO CREATE ROUTE(endpoint):
 #  1. create model in models/users.py file

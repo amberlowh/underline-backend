@@ -26,3 +26,12 @@ async def register_user(form, db):
 
     # return user_id if success
     return user_id
+
+async def delete_user(email, db):
+
+    # create column for insertion in db
+    column = db[DB_NAME]["users"]
+
+    column.delete_one(("email": email))
+
+    #return user id 
