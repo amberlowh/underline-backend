@@ -32,6 +32,25 @@ async def register_user(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(user_id=user_id)
 
+    @router.get(
+    "/users/get_user_info",
+    response_model=models.get_user_info_response,
+    description=docs.get_user_info_desc,
+    summary=docs.get_user_info_summ,
+    tags=["Users"],
+    status_code=200,
+
+    async def get_user_info(form: models.get_user_info_form):
+    # receive data from client -> util.get_user_info method -> return user_id from DB insertion
+
+    # get DB instance
+    db = get_database()
+    # send the form data and DB instance to util.users.register_user
+    user_id = await utils.register_user(form, db)
+
+    # return response in reponse model
+    return models.registration_response(user_id=user_id)
+
 
 # FLOW TO CREATE ROUTE(endpoint):
 #  1. create model in models/users.py file
@@ -48,3 +67,4 @@ async def register_user(form: models.registration_form):
 
 #  login - @lazaro
 #  - implement bcrypt ON the model class
+
