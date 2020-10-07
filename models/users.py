@@ -13,14 +13,3 @@ class registration_form(Users):
 
 class registration_response(BaseModel):
     user_id: str
-
-#get 
-class get_user_info_response(Users):
-    pass #? do I not need to pass anything to Users
-    
-#This was wrong. Because this was for the register 
-#user enpoint which is sending information with the Users 
-#inherited?
-#class get_user_info(Users):
-#    pass
-    
