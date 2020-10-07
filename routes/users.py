@@ -36,8 +36,8 @@ async def register_user(form: models.registration_form):
 
 @router.delete(
     "/users/delete",
-    description=docs.registration_desc,
-    summary=docs.registration_summ,
+    description=docs.delete_user_desc,
+    summary=docs.delete_user_summ,
     tags=["Users"],
     status_code=204,
 )
