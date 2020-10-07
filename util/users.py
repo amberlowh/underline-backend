@@ -26,3 +26,30 @@ async def register_user(form, db):
 
     # return user_id if success
     return user_id
+
+#method handling GET
+#what exactly is the client getting 
+
+async def get_user_info(email, db):
+
+    column = db[DB_NAME]["users"]
+
+    #make query from identifier input
+    query = {"email": email}
+
+    #query to database
+    response = column.find_one(query)
+
+    if response.        == 0:
+        raise HTTPException(
+            status_code=404, detail="User does not exist"
+            )
+    else:
+        return user_id
+        # I dont think I'm supposed to be returning the id 
+
+
+
+
+
+
