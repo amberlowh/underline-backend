@@ -51,7 +51,7 @@ async def get_user_info(email: str):
     db = get_database()
 
     # return response in reponse model
-    return models.get_user_info_response(user_id=user_id)
+    return await util.get_user_info(email)
 
 
 # FLOW TO CREATE ROUTE(endpoint):

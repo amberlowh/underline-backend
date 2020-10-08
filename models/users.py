@@ -16,7 +16,7 @@ class registration_response(BaseModel):
 
 #get 
 class get_user_info_response(Users):
-    pass #? do I not need to pass anything to Users
+    pass #I do not need to add anything to Users
     
 #This was wrong. Because this was for the register 
 #user enpoint which is sending information with the Users 
