@@ -1,6 +1,6 @@
 import uuid
 from config.db import get_database
-
+import logging 
 DB_NAME = "underline"
 
 
@@ -26,3 +26,9 @@ async def register_user(form, db):
 
     # return user_id if success
     return user_id
+
+# Returns user dictionary
+async def get_user(user_id, db):
+    column = db[DB_NAME]["users"]
+    user = column.find_one({"_id": user_id})
+    return user
