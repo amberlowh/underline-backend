@@ -1,7 +1,7 @@
 import uuid
 from starlette.exceptions import HTTPException
 from config.db import get_database
-
+import logging
 DB_NAME = "underline"
 
 
@@ -40,4 +40,8 @@ async def delete_user(email, db):
             status_code=404, detail="User not found and could not be deleted"
         )
 
-    # return user id
+# Returns user dictionary
+async def get_user(user_id, db):
+    column = db[DB_NAME]["users"]
+    user = column.find_one({"_id": user_id})
+    return user

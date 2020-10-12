@@ -4,6 +4,7 @@ from starlette.exceptions import HTTPException
 
 from models import users as models
 from docs import users as docs
+import logging
 import util.users as utils
 
 router = APIRouter()
@@ -52,6 +53,13 @@ async def delete_user(email: str):
 
     # Delete User
     await utils.delete_user(email, db)
+
+
+@router.get("/users/{user_id}", response_model=models.Users, status_code=201)
+async def get_user(user_id):
+    db = get_database()
+    user_data = await utils.get_user(user_id, db)
+    return models.Users(**user_data)
 
 
 # FLOW TO CREATE ROUTE(endpoint):
