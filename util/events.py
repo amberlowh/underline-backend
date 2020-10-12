@@ -52,6 +52,6 @@ async def events_by_location(origin, radius, db):
 
     events = column.find({}, {"_id":0, "location":1})
 
-    valid_events = map(within_radius, events)
+    valid_events = filter(within_radius, events)
 
     return valid_events

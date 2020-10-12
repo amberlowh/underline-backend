@@ -50,7 +50,7 @@ async def get_event(event_id):
 #  3. implement the actual method handling in utils/users.py file
 #  4. write docs in docs/users.py file and test!!
 
-@router.post(
+@router.get(
     "/events/location/",
     response_model=models.registration_response,
     description=docs.events_by_location_desc,
