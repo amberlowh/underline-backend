@@ -4,3 +4,6 @@ Inserts the registration form to the user's database.
 registration_summ = """
 Register User
 """
+delete_user_desc = """
+Delete User
+"""
