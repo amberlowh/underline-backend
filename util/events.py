@@ -8,27 +8,27 @@ async def generate_id():
     return str(uuid.uuid4())
 
 
-async def register_user(form, db):
+async def register_event(form, db):
     # cast input form (python class) -> dictionary (become JSON eventually)
     form_dict = form.dict()
 
-    # generating user_id (UUID)
-    user_id = await generate_id()
+    # generating event_id (UUID)
+    event_id = await generate_id()
 
-    # insert the user_id to the dictionary for insertion
-    form_dict["_id"] = user_id
+    # insert the event_id to the dictionary for insertion
+    form_dict["_id"] = event_id
 
     # create column for insertion in db
-    column = db[DB_NAME]["users"]
+    column = db[DB_NAME]["events"]
 
     # insert id into column
     column.insert_one(form_dict)
 
     # return user_id if success
-    return user_id
+    return event_id
 
-# Returns user dictionary
-async def get_user(user_id, db):
-    column = db[DB_NAME]["users"]
-    user = column.find_one({"_id": user_id})
+# Returns event dictionary
+async def get_event(event_id, db):
+    column = db[DB_NAME]["events"]
+    user = column.find_one({"_id": event_id})
     return user

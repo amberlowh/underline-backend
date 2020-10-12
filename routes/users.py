@@ -3,6 +3,7 @@ from fastapi import APIRouter
 
 from models import users as models
 from docs import users as docs
+import logging
 import util.users as utils
 
 router = APIRouter()
@@ -31,6 +32,17 @@ async def register_user(form: models.registration_form):
 
     # return response in reponse model
     return models.registration_response(user_id=user_id)
+
+@router.get(
+    "/users/{user_id}",
+    response_model=models.Users,
+    status_code=201
+)
+
+async def get_user(user_id):
+    db = get_database()
+    user_data = await utils.get_user(user_id, db)    
+    return models.Users(**user_data)
 
 
 # FLOW TO CREATE ROUTE(endpoint):
