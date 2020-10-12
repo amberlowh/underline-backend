@@ -3,6 +3,7 @@ from fastapi import APIRouter
 
 from models import users as models
 from docs import users as docs
+import logging
 import util.users as utils
 
 router = APIRouter()
@@ -32,6 +33,7 @@ async def register_user(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(user_id=user_id)
 
+
 @router.delete(
     "/users/delete",
     description=docs.registration_desc,
@@ -40,12 +42,19 @@ async def register_user(form: models.registration_form):
     status_code=204,
 )
 async def delete_user(email: str):
-    
-    #get DB Database
-    db= get_database()
 
-    #Delete User
+    # get DB Database
+    db = get_database()
+
+    # Delete User
     await utils.delete_user(email, db)
+
+
+@router.get("/users/{user_id}", response_model=models.Users, status_code=201)
+async def get_user(user_id):
+    db = get_database()
+    user_data = await utils.get_user(user_id, db)
+    return models.Users(**user_data)
 
 
 # FLOW TO CREATE ROUTE(endpoint):

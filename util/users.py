@@ -1,6 +1,6 @@
 import uuid
 from config.db import get_database
-
+import logging
 DB_NAME = "underline"
 
 
@@ -34,4 +34,10 @@ async def delete_user(email, db):
 
     column.delete_one(("email": email))
 
-    #return user id 
+    #return user id
+
+# Returns user dictionary
+async def get_user(user_id, db):
+    column = db[DB_NAME]["users"]
+    user = column.find_one({"_id": user_id})
+    return user
