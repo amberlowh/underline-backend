@@ -7,3 +7,7 @@ Register User
 delete_user_desc = """
 Delete User
 """
+
+delete_user_summ = """
+Delete User Summary
+"""
