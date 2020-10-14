@@ -37,7 +37,7 @@ async def get_event(event_id, db):
 async def events_by_location(origin, radius, db):
 
     def within_radius(event):
-        event_location = event.get("location")
+        event_location = event.get("location", {})
 
         event_lat = event_location.get("latitude", "0") 
         event_lon = event_location.get("longitude", "0")
@@ -50,7 +50,7 @@ async def events_by_location(origin, radius, db):
 
     column = db[DB_NAME]["events"]
 
-    events = column.find({}, {"_id":0, "location":1})
+    events = column.find({})
 
     valid_events = list(filter(within_radius, events))
 
