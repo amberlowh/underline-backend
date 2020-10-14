@@ -1,7 +1,6 @@
 from config.db import get_database
 from fastapi import APIRouter
 from starlette.exceptions import HTTPException
-
 from models import users as models
 from docs import users as docs
 import logging
