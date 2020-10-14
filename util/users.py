@@ -30,8 +30,9 @@ async def register_user(form, db):
 
 
 #method handling GET
-#what exactly is the client getting, the user info, 
+#what exactly is the client getting, the user info,
 #firstname last and email
+
 
 async def get_user_info(email, db):
     #why is it email, db ... commas?
@@ -44,12 +45,10 @@ async def get_user_info(email, db):
     response = column.find_one(query)
 
     if not response:
-        raise HTTPException(
-            status_code=404, detail="User does not exist"
-            )
-    
+        raise HTTPException(status_code=404, detail="User does not exist")
+
     return response
-    
+
 
 async def delete_user(email, db):
 
@@ -58,9 +57,8 @@ async def delete_user(email, db):
 
     response = column.delete_one({"email": email})
     if response.deleted_count == 0:
-        raise HTTPException(
-            status_code=404, detail="User not found and could not be deleted"
-        )
+        raise HTTPException(status_code=404,
+                            detail="User not found and could not be deleted")
 
 
 # Returns user dictionary
