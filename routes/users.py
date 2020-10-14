@@ -1,6 +1,6 @@
 from config.db import get_database
 from fastapi import APIRouter
-
+from starlette.exceptions import HTTPException
 from models import users as models
 from docs import users as docs
 import util.users as utils
@@ -39,6 +39,7 @@ async def register_user(form: models.registration_form):
     summary=docs.get_user_info_summ,
     tags=["Users"],
     status_code=200,
+
 )
 async def get_user_info(email: str):
     # receive data from client -> util.get_user_info method -> 
@@ -51,7 +52,7 @@ async def get_user_info(email: str):
     db = get_database()
 
     # return response in reponse model
-    return await util.get_user_info(email)
+    return await utils.get_user_info(email, db)
 
 
 # FLOW TO CREATE ROUTE(endpoint):

@@ -1,5 +1,6 @@
 import uuid
 from config.db import get_database
+from starlette.exceptions import HTTPException
 
 DB_NAME = "underline"
 
@@ -41,7 +42,7 @@ async def get_user_info(email, db):
     #query to database
     response = column.find_one(query)
 
-    if !response:
+    if not response:
         raise HTTPException(
             status_code=404, detail="User does not exist"
             )
