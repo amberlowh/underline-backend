@@ -1,7 +1,7 @@
 import uuid
-from config.db import get_database
 from starlette.exceptions import HTTPException
-
+from config.db import get_database
+import logging
 DB_NAME = "underline"
 
 
@@ -28,6 +28,7 @@ async def register_user(form, db):
     # return user_id if success
     return user_id
 
+
 #method handling GET
 #what exactly is the client getting, the user info, 
 #firstname last and email
@@ -48,10 +49,22 @@ async def get_user_info(email, db):
             )
     
     return response
-     
+    
+
+async def delete_user(email, db):
+
+    # create column for insertion in db
+    column = db[DB_NAME]["users"]
+
+    response = column.delete_one({"email": email})
+    if response.deleted_count == 0:
+        raise HTTPException(
+            status_code=404, detail="User not found and could not be deleted"
+        )
 
 
-
-
-
-
+# Returns user dictionary
+async def get_user(user_id, db):
+    column = db[DB_NAME]["users"]
+    user = column.find_one({"_id": user_id})
+    return user

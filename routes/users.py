@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from starlette.exceptions import HTTPException
 from models import users as models
 from docs import users as docs
+import logging
 import util.users as utils
 
 router = APIRouter()
@@ -32,27 +33,32 @@ async def register_user(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(user_id=user_id)
 
-@router.get(
-    "/users/get_user_info",
-    response_model=models.get_user_info_response,
-    description=docs.get_user_info_desc,
-    summary=docs.get_user_info_summ,
+
+@router.delete(
+    "/users/delete",
+    description=docs.delete_user_desc,
+    summary=docs.delete_user_summ,
     tags=["Users"],
-    status_code=200,
-
+    status_code=204,
 )
-async def get_user_info(email: str):
-    # receive data from client -> util.get_user_info method -> 
-    #?return user_id from DB insertion?
+async def delete_user(email: str):
 
+    # if email input is none, raise error
     if not email:
         raise HTTPException(status_code=400, detail="Input invalid/not present")
 
-    # get DB instance
+    # get DB Database
     db = get_database()
 
-    # return response in reponse model
-    return await utils.get_user_info(email, db)
+    # Delete User
+    await utils.delete_user(email, db)
+
+
+@router.get("/users/{user_id}", response_model=models.Users, status_code=201)
+async def get_user(user_id):
+    db = get_database()
+    user_data = await utils.get_user(user_id, db)
+    return models.Users(**user_data)
 
 
 # FLOW TO CREATE ROUTE(endpoint):
@@ -70,4 +76,3 @@ async def get_user_info(email: str):
 
 #  login - @lazaro
 #  - implement bcrypt ON the model class
-
