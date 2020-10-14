@@ -27,8 +27,8 @@ async def register_user(form, db):
     # return user_id if success
     return user_id
 
-async def update_user(item_id, new_data, db):
-    old_data = db.find_one(item_id)
-    old_data.update(new_data)
+async def update_user(user_id,new_data, db):
+    old_data = db.find_one(user_id)
     db.update_one(old_data,new_data)
+    old_data.update(new_data)
     return old_data
