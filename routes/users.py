@@ -1,7 +1,7 @@
+from pydantic import EmailStr
 from config.db import get_database
 from fastapi import APIRouter
 from starlette.exceptions import HTTPException
-
 from models import users as models
 from docs import users as docs
 import logging
@@ -46,7 +46,8 @@ async def delete_user(email: str):
 
     # if email input is none, raise error
     if not email:
-        raise HTTPException(status_code=400, detail="Input invalid/not present")
+        raise HTTPException(status_code=400,
+                            detail="Input invalid/not present")
 
     # get DB Database
     db = get_database()
@@ -55,10 +56,10 @@ async def delete_user(email: str):
     await utils.delete_user(email, db)
 
 
-@router.get("/users/{user_id}", response_model=models.Users, status_code=201)
-async def get_user(user_id):
+@router.get("/users/find", response_model=models.Users, status_code=201)
+async def get_user(email: EmailStr):
     db = get_database()
-    user_data = await utils.get_user(user_id, db)
+    user_data = await utils.get_user_info(email, db)
     return models.Users(**user_data)
 
 
@@ -67,7 +68,6 @@ async def get_user(user_id):
 #  2. write routing code in routes/users.py file (here)
 #  3. implement the actual method handling in utils/users.py file
 #  4. write docs in docs/users.py file and test!!
-
 
 #  delete user - @eduardo
 
