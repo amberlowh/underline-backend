@@ -39,8 +39,8 @@ async def events_by_location(origin, radius, db):
     def within_radius(event):
         event_location = event.get("location", {})
 
-        event_lat = event_location.get("latitude", "0") 
-        event_lon = event_location.get("longitude", "0")
+        event_lat = event_location.get("latitude", 0) 
+        event_lon = event_location.get("longitude", 0)
  
         destination = (event_lat, event_lon)
 
