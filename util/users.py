@@ -1,5 +1,6 @@
 import uuid
 from config.db import get_database
+from starlette.exceptions import HTTPException
 
 DB_NAME = "underline"
 
@@ -27,8 +28,19 @@ async def register_user(form, db):
     # return user_id if success
     return user_id
 
-async def update_user(user_id,new_data, db):
-    old_data = db.find_one(user_id)
-    db.update_one(old_data,new_data)
+
+async def update_user(user_id, new_data, db):
+    col = db[DB_NAME]["users"]
+
+    # check that the user exists
+    user_query = {"_id": user_id}
+    old_data = col.find_one(user_query)
+    if not old_data:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # update the dict then insert new data into DB
     old_data.update(new_data)
+    col.update_one(user_query, {"$set": old_data})
+
+    # return updated data dict
     return old_data
