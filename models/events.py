@@ -1,6 +1,7 @@
 from pydantic import EmailStr, BaseModel
 from typing import List
 from models import users as models
+from enum import Enum
 
 import datetime
 
@@ -27,3 +28,5 @@ class registration_form(Events):
 
 class registration_response(BaseModel):
   event_id: str
+
+

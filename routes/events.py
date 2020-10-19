@@ -41,6 +41,15 @@ async def get_event(event_id):
     event_data = await utils.get_event(event_id, db)
     return models.Events(**event_data)
 
+@router.get(
+    "/users/{event_id}",
+    response_model=models.Events,
+    status_code=200
+)
+async def get_event_by_status(event_id):
+    db = get_database()
+    event_status = await utils.get_event_by_status(event_id,db)
+    return models.Events(**event_status)
 
 # FLOW TO CREATE ROUTE(endpoint):
 #  1. create model in models/users.py file

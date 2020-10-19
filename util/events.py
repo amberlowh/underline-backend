@@ -32,3 +32,9 @@ async def get_event(event_id, db):
     column = db[DB_NAME]["events"]
     user = column.find_one({"_id": event_id})
     return user
+
+# Returns all the events.
+async def get_event_by_status(event_id,db):
+    column = db[DB_NAME]["events"]
+    all_events = db.underline.find()
+    return all_events
