@@ -39,6 +39,7 @@ async def get_event(event_id):
     return models.Events(**event_data)
 
 
+# TODO: fix this once everything else is implemented and status is relevant
 @router.get(
     "/events/{event_id}",
     response_model=models.get_all_events_by_status_response,
