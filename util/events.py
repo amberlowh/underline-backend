@@ -1,9 +1,10 @@
 from config.db import get_database
 from geopy import distance
 import uuid
-import logging 
+import logging
 
 DB_NAME = "underline"
+
 
 async def generate_id():
     return str(uuid.uuid4())
@@ -28,25 +29,26 @@ async def register_event(form, db):
     # return user_id if success
     return event_id
 
+
 # Returns event dictionary
 async def get_event(event_id, db):
     column = db[DB_NAME]["events"]
     user = column.find_one({"_id": event_id})
     return user
 
-async def events_by_location(origin, radius, db):
 
+async def events_by_location(origin, radius, db):
     def within_radius(event):
         event_location = event.get("location", {})
 
-        event_lat = event_location.get("latitude", 0) 
+        event_lat = event_location.get("latitude", 0)
         event_lon = event_location.get("longitude", 0)
- 
+
         destination = (event_lat, event_lon)
 
-        distance = distance.distance(origin, destination).miles
+        distance_mi = distance.distance(origin, destination).miles
 
-        return distance <= radius
+        return distance_mi <= radius
 
     column = db[DB_NAME]["events"]
 

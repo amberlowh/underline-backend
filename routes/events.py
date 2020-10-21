@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 from models import events as models
 from docs import events as docs
-import util.users as utils
+import util.events as utils
 
 import logging
 
@@ -33,11 +33,8 @@ async def register_event(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(event_id=event_id)
 
-@router.get(
-    "/users/{event_id}",
-    response_model=models.Events,
-    status_code=201
-)
+
+@router.get("/users/{event_id}", response_model=models.Events, status_code=201)
 async def get_event(event_id):
     db = get_database()
     event_data = await utils.get_event(event_id, db)
@@ -50,9 +47,10 @@ async def get_event(event_id):
 #  3. implement the actual method handling in utils/users.py file
 #  4. write docs in docs/users.py file and test!!
 
+
 @router.get(
     "/events/location/",
-    response_model=models.registration_response,
+    response_model=models.events_by_location_response,
     description=docs.events_by_location_desc,
     summary=docs.events_by_location_summ,
     tags=["Events"],
@@ -67,6 +65,6 @@ async def events_by_location(lat: str, lon: str, radius: int = 10):
 
     origin = (lat, lon)
 
-    valid_events = await utils.register_user(origin, radius, db)
+    valid_events = await utils.events_by_location(origin, radius, db)
 
     return models.events_by_location_response(events=valid_events)
