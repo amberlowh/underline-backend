@@ -50,8 +50,9 @@ async def events_by_location(origin, radius, db):
 
     column = db[DB_NAME]["events"]
 
-    events = column.find({})
+    events = column.find()
+    all_events = [event for event in events]
 
-    valid_events = list(filter(within_radius, events))
+    valid_events = list(filter(within_radius, all_events))
 
     return valid_events
