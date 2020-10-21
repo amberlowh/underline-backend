@@ -29,9 +29,9 @@ class Events(BaseModel):
 class registration_form(Events):
     pass
 
-
-class registration_response(BaseModel):
-    event_id: str
+    
+class events_by_location_response(BaseModel):
+    events: List[Events]
 
 
 class get_all_events_by_status_response(BaseModel):
