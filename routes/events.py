@@ -3,6 +3,7 @@ from fastapi import APIRouter
 
 from models import events as models
 #from docs import events as docs
+from docs import events as docs
 import logging
 import util.events as utils
 
@@ -17,6 +18,8 @@ router = APIRouter()
 @router.post(
     "/events/register",
     response_model=models.registration_response,
+    description=docs.registration_desc,
+    summary=docs.registration_summ,
     tags=["Events"],
     status_code=201,
 )

@@ -26,7 +26,7 @@ async def register_event(form, db):
 
     # return user_id if success
     return event_id
-
+    
 # Returns event dictionary
 async def get_event(event_id, db):
     column = db[DB_NAME]["events"]
