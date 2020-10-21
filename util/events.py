@@ -1,6 +1,5 @@
 from config.db import get_database
 from geopy import distance
-import uuid
 import logging
 
 DB_NAME = "underline"
@@ -58,3 +57,14 @@ async def events_by_location(origin, radius, db):
     valid_events = list(filter(within_radius, all_events))
 
     return valid_events
+
+# Returns all the events.
+async def get_event_by_status(event_id, db):
+    column = db[DB_NAME]["events"]
+    all_events = column.find()
+    all_events_list = [event for event in all_events]
+    if not all_events_list:
+        raise HTTPException(status_code=404,
+                            detail="Event with given ID not found")
+    return {"events": all_events_list}
+

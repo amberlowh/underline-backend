@@ -41,12 +41,24 @@ async def get_event(event_id):
     return models.Events(**event_data)
 
 
+@router.get(
+    "/events/{event_id}",
+    response_model=models.get_all_events_by_status_response,
+    status_code=200,
+    tags=["Events"],
+)
+async def get_event_by_status(event_id):
+    db = get_database()
+    event_status = await utils.get_event_by_status(event_id, db)
+    #  return models.Events(**event_status)
+    return event_status
+
+
 # FLOW TO CREATE ROUTE(endpoint):
 #  1. create model in models/users.py file
 #  2. write routing code in routes/users.py file (here)
 #  3. implement the actual method handling in utils/users.py file
 #  4. write docs in docs/users.py file and test!!
-
 
 @router.get(
     "/events/location/",
