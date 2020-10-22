@@ -5,10 +5,13 @@ registration_summ = """
 Register User
 """
 
-get_user_info_desc = """ """
+get_user_info_desc = """
+Returns all user info by email,
+(firstname lastname and email are returned)
+ """
 
 get_user_info_summ = """
-Get user
+Get user info
 """
 
 delete_user_desc = """
