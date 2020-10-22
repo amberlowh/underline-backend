@@ -1,13 +1,32 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from config.db import connect_to_mongo, close_connection_to_mongo
 from routes.users import router as users_router
 from routes.events import router as events_router
 
 app = FastAPI()
 
+
 @app.get("/")
 def index():
     return {"Hello": "World"}
+
+
+origins = [
+    "https://localhost",
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://sparkdev-underline.herokuapp.com",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(users_router)
 app.include_router(events_router)

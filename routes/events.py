@@ -1,11 +1,11 @@
+from starlette.exceptions import HTTPException
 from config.db import get_database
 from fastapi import APIRouter
 
 from models import events as models
-#from docs import events as docs
 from docs import events as docs
+from util import events as utils
 import logging
-import util.events as utils
 
 router = APIRouter()
 
@@ -34,15 +34,26 @@ async def register_event(form: models.registration_form):
     # return response in reponse model
     return models.registration_response(event_id=event_id)
 
-@router.get(
-    "/users/{event_id}",
-    response_model=models.Events,
-    status_code=201
-)
+
+@router.get("/users/{event_id}", response_model=models.Events, status_code=201)
 async def get_event(event_id):
     db = get_database()
     event_data = await utils.get_event(event_id, db)
     return models.Events(**event_data)
+
+
+# TODO: fix this once everything else is implemented and status is relevant
+@router.get(
+    "/events/{event_id}",
+    response_model=models.get_all_events_by_status_response,
+    status_code=200,
+    tags=["Events"],
+)
+async def get_event_by_status(event_id):
+    db = get_database()
+    event_status = await utils.get_event_by_status(event_id, db)
+    #  return models.Events(**event_status)
+    return event_status
 
 
 # FLOW TO CREATE ROUTE(endpoint):
@@ -50,3 +61,24 @@ async def get_event(event_id):
 #  2. write routing code in routes/users.py file (here)
 #  3. implement the actual method handling in utils/users.py file
 #  4. write docs in docs/users.py file and test!!
+
+@router.get(
+    "/events/location/",
+    response_model=models.events_by_location_response,
+    description=docs.events_by_location_desc,
+    summary=docs.events_by_location_summ,
+    tags=["Events"],
+    status_code=201,
+)
+async def events_by_location(lat: str, lon: str, radius: int = 10):
+
+    if not lat or not lon:
+        raise HTTPException(status_code=400, detail="Missing coordinate(s)")
+
+    db = get_database()
+
+    origin = (lat, lon)
+
+    valid_events = await utils.events_by_location(origin, radius, db)
+
+    return models.events_by_location_response(events=valid_events)

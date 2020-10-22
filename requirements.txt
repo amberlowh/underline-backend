@@ -1,7 +1,11 @@
+starlette
 fastapi
 uvicorn
 pydantic
 pymongo
 gunicorn
 dnspython
+geopy
 email-validator
+uvloop
+httptools

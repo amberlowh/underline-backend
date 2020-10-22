@@ -1,7 +1,9 @@
 import uuid
 from enum import Enum
 from config.db import get_database
+from geopy import distance
 import logging
+
 DB_NAME = "underline"
 
 
@@ -44,3 +46,36 @@ async def get_event(event_id, db):
     column = db[DB_NAME]["events"]
     user = column.find_one({"_id": event_id})
     return user
+
+
+async def events_by_location(origin, radius, db):
+    def within_radius(event):
+        event_location = event.get("location", {})
+
+        event_lat = event_location.get("latitude", 0)
+        event_lon = event_location.get("longitude", 0)
+
+        destination = (event_lat, event_lon)
+
+        distance_mi = distance.distance(origin, destination).miles
+
+        return distance_mi <= radius
+
+    column = db[DB_NAME]["events"]
+
+    events = column.find()
+    all_events = [event for event in events]
+
+    valid_events = list(filter(within_radius, all_events))
+
+    return valid_events
+
+# Returns all the events.
+async def get_event_by_status(event_id, db):
+    column = db[DB_NAME]["events"]
+    all_events = column.find()
+    all_events_list = [event for event in all_events]
+    if not all_events_list:
+        raise HTTPException(status_code=404,
+                            detail="Event with given ID not found")
+    return {"events": all_events_list}

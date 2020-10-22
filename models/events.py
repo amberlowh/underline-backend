@@ -2,7 +2,6 @@ from pydantic import EmailStr, BaseModel
 from typing import List
 from models import users as models
 from enum import Enum, auto
-
 from datetime import datetime
 
 
@@ -30,7 +29,9 @@ class Location(BaseModel):
     longitude: float
 
 
+
 # incomplete
+# TODO: fix this name to be single event (doesnt make sense for plural)
 class Events(BaseModel):
     title: str
     description: str
@@ -55,3 +56,11 @@ class registration_form(Events):
 
 class registration_response(BaseModel):
     event_id: str
+
+    
+class events_by_location_response(BaseModel):
+    events: List[Events]
+
+
+class get_all_events_by_status_response(BaseModel):
+    events: List[Events]
