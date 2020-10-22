@@ -1,6 +1,7 @@
 import uuid
+from enum import Enum
 from config.db import get_database
-import logging 
+import logging
 DB_NAME = "underline"
 
 
@@ -21,12 +22,23 @@ async def register_event(form, db):
     # create column for insertion in db
     column = db[DB_NAME]["events"]
 
+    # XXX BAD CODE ALERT!!!!
+    # This will turn every instance of a enum into a string of itself
+    # Bad time complexity and pretty stupid
+    # Fix this in models!!!
+    # TODO: this code will break the "query by status" endpoint when it is implemented
+    # fix before testing that!!!
+    for key, val in form_dict.items():
+        if isinstance(val, Enum):
+            form_dict[key] = val.name
+
     # insert id into column
     column.insert_one(form_dict)
 
     # return user_id if success
     return event_id
-    
+
+
 # Returns event dictionary
 async def get_event(event_id, db):
     column = db[DB_NAME]["events"]
