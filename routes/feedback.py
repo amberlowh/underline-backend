@@ -13,18 +13,18 @@ router = APIRouter()
 
 @router.delete(
     "/feedback/delete/{event_id}/{feedback_id}",
-    #description=docs.delete_user_desc,
-    #summary=docs.delete_user_summ,
-    #tags=["Users"],
+    #description=
+    #summary=
+    #tags=
     status_code=204,
 )
-async def delete_user(event_id, feedback_id):                   
+async def delete_event(event_id, feedback_id):                   
 
     # get DB Database
     db = get_database()
 
     # perform deletion
-    await utils.delete_feedback(event_id, feedback_id)
+    await utils.delete_feedback(event_id, feedback_id, db)
 
     # prevent console error
     return Response(status_code=204) # https://github.com/tiangolo/fastapi/issues/717#issuecomment-583826657
