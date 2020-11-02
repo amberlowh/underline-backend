@@ -1,10 +1,8 @@
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config.db import connect_to_mongo, close_connection_to_mongo
+from config.main import app
 from routes.users import router as users_router
 from routes.events import router as events_router
-
-app = FastAPI()
 
 
 @app.get("/")

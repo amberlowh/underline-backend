@@ -2,7 +2,7 @@ import uuid
 from starlette.exceptions import HTTPException
 from config.db import get_database
 import logging
-DB_NAME = "underline"
+from config.db import DB_NAME
 
 
 async def generate_id():
