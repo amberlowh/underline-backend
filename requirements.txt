@@ -9,3 +9,4 @@ geopy
 email-validator
 uvloop
 httptools
+pytest
