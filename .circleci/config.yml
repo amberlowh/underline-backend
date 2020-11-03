@@ -9,17 +9,17 @@ jobs:
     steps:
       - checkout
       - run:
-        name: activate virtual environment
-        command: |
-          python3 -m venv venv
-          . venv/bin/activate
+          name: activate virtual environment
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
       - run:
-        name: install dependencies
-        command: |
-          . venv/bin/activate
-          pip install -r requirements.txt
+          name: install dependencies
+          command: |
+            . venv/bin/activate
+            pip install -r requirements.txt
       - run:
-        name: run tests
-        command: |
-          . venv/bin/activate
-          pytest
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pytest
