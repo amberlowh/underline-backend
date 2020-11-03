@@ -31,6 +31,7 @@ class TestUserRegister:
         user_data = get_user_registration_form()
         # send request to test client
         response = client.post("/users/register", json=user_data)
+        breakpoint()
         # check that response is good
         assert check_user_register_response_valid(response)
 
@@ -39,12 +40,3 @@ class TestUserRegister:
         response = client.post("/users/register", json={})
         # check that response is good
         assert not check_user_register_response_valid(response)
-
-
-#  def test_find_user_success(registered_user, rand_num):
-#  logging.info(registered_user)
-#  logging.info(F"rand num is: {rand_num}")
-#  params = {"email": registered_user.get("email")}
-#  response = client.get("/users/find", params=params)
-#  assert False
-#  assert response.status_code == 201

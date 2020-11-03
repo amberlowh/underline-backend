@@ -1,10 +1,8 @@
 import uuid
 from enum import Enum
-from config.db import get_database
+from config.db import get_database, get_db_name
 from geopy import distance
 import logging
-
-DB_NAME = "underline"
 
 
 async def generate_id():
@@ -22,7 +20,7 @@ async def register_event(form, db):
     form_dict["_id"] = event_id
 
     # create column for insertion in db
-    column = db[DB_NAME]["events"]
+    column = db[get_db_name()]["events"]
 
     # XXX BAD CODE ALERT!!!!
     # This will turn every instance of a enum into a string of itself
@@ -43,7 +41,7 @@ async def register_event(form, db):
 
 # Returns event dictionary
 async def get_event(event_id, db):
-    column = db[DB_NAME]["events"]
+    column = db[get_db_name()]["events"]
     user = column.find_one({"_id": event_id})
     return user
 
@@ -61,7 +59,7 @@ async def events_by_location(origin, radius, db):
 
         return distance_mi <= radius
 
-    column = db[DB_NAME]["events"]
+    column = db[get_db_name()]["events"]
 
     events = column.find()
     all_events = [event for event in events]
@@ -70,9 +68,10 @@ async def events_by_location(origin, radius, db):
 
     return valid_events
 
+
 # Returns all the events.
 async def get_event_by_status(event_id, db):
-    column = db[DB_NAME]["events"]
+    column = db[get_db_name()]["events"]
     all_events = column.find()
     all_events_list = [event for event in all_events]
     if not all_events_list:

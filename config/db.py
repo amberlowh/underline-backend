@@ -11,7 +11,9 @@ def is_testing():
     return os.environ.get("_called_from_test") == "True"
 
 
-DB_NAME = "underline" if not is_testing() else "pytest"
+def get_db_name():
+    return "underline" if not is_testing() else "pytest"
+
 
 db = Database()
 
