@@ -41,7 +41,7 @@ class TestUserRegister:
         assert not check_user_register_response_valid(response)
 
 
-def test_find_user_success(registered_user, rand_num):
+def test_find_user_success(registered_user):
     params = {"email": registered_user.get("email")}
     response = client.get("/users/find", params=params)
     assert response.status_code == 201
