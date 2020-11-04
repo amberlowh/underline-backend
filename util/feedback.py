@@ -23,3 +23,11 @@ async def delete_feedback(event_id, feedback_id, db):
                             detail="Feedback ID not found in the provided event")
                             
     column.update_one({"_id": event_id}, {"$set": found_event})
+
+
+
+# Returns event dictionary
+async def get_feedback(feedback_id, db):
+    column = db[DB_NAME]["feedback"]
+    user = column.find_one({"_id": feedback_id})
+    return user
