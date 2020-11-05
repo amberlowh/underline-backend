@@ -70,7 +70,7 @@ async def get_event_by_status(event_id):
     tags=["Events"],
     status_code=201,
 )
-async def events_by_location(lat: str, lon: str, radius: int = 10):
+async def events_by_location(lat: float, lon: float, radius: int = 10):
 
     if not lat or not lon:
         raise HTTPException(status_code=400, detail="Missing coordinate(s)")

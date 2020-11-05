@@ -18,10 +18,9 @@ def get_user_registration_form():
 
 
 def check_user_register_response_valid(response):
-    valid = True
-    valid = valid and response.status_code == 201
-    valid = valid and "user_id" in response.json()
-    return valid
+    test1 = response.status_code == 201
+    test2 = "user_id" in response.json()
+    return all([test1, test2])
 
 
 # used to test "/users/register"
