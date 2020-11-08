@@ -6,37 +6,36 @@ import logging
 
 client = TestClient(app)
 
-# methods for testing get user 
-def get_user_registration_form():
-    user_data = {
-        "first_name": "Testing_first",
-        "last_name": "Testing_last",
-        "email": "test@mail.com"
-    }
-    return user_data
-
-def check_get_user_response_valid(response):
+def check_get_user_response_valid(response, registration data = None):
     valid = True
     valid = valid and response.status_code == 201
-    valid = valid and "user_id" in response.json()
+    valid = valid and "first_name" in response.json()
+    valid = valid and "last_name" in response.json()
+    valid = valide and "email" in response.json()
     return valid
 
 
 # used to test "/users/find"
 class TestGetUser:
-    def test_get_user_success(self):
+    def test_get_user_success(self, registered_user):
         # get fake user data to test
-        user_data = get_user_registration_form()
+        params = {"email": registered_user["email"]}
         # send request to test client
-        response = client.get("/users/find", json=user_data)
-        breakpoint()
+        response = client.get("/users/find", params=params)
+        
         # check that response is good
-        assert check_get_user_response_valid(response)
+        assert check_get_user_response_valid(response, registered_user)
 
-    def test_get_user_empty_data_failure(self):
+    def test_get_nonexistent_user_failure(self, registered_user):
+
+        params = {"email": "fake.mail"}
         # send request to test client
-        response = client.post("/users/register", json={})
+        response = client.get("/users/find", params=params)
         # check that response is good
-        assert not check_user_register_response_valid(response)
+        assert not check_get_user_response_valid(response)
+    
+    #what other tests, get 
+
+    
 
 
