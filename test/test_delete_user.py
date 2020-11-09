@@ -16,14 +16,14 @@ def check_delete_user_response_valid(response):
 
 # used to test "/users/delete"
 class TestDeleteUser:
-    def test_delete_user_success(self):
+    def test_delete_user_success(self, registered_user):
         # send request to check if client is deleted
-        response = client.delete("/users/delete")
+        response = client.delete("/users/delete?",params={"email": registered_user["email"]})
         # check that response is good
         assert check_delete_user_response_valid(response)
 
     def test_register_user_empty_data_failure(self):
         # send request to test client
-        response = client.post("/users/delete", json={})
+        response = client.post("/users/delete", params={})
         # check that response is good
         assert not check_delete_user_response_valid(response)
