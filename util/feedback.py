@@ -4,6 +4,9 @@ from config.db import get_database
 import logging
 DB_NAME = "underline"
 
+async def generate_id():
+    return str(uuid.uuid4())
+
 # Given an event id and feedback id, attempt to delete the feedback from the event's comment_ids array
 async def delete_feedback(event_id, feedback_id, db):
     
@@ -23,3 +26,30 @@ async def delete_feedback(event_id, feedback_id, db):
                             detail="Feedback ID not found in the provided event")
                             
     column.update_one({"_id": event_id}, {"$set": found_event})
+
+# Given an event id, create a feedback id and add the feedback to the event
+# Event id is a body parameter
+async def add_feedback(form, db):
+    form_dict = form.dict()
+    feedback_id = await generate_id()
+    form_dict["_id"] = feedback_id
+
+    event_id = form_dict["event_id"]
+
+    # attempt to find event and add feedback
+    column = db[DB_NAME]["events"]
+    found_event = column.find_one({"_id": event_id})
+    
+    if not found_event:
+        raise HTTPException(status_code=404,
+                            detail="Event ID is invalid")
+    
+    found_event["comment_ids"].append(feedback_id)
+    column.update_one({"_id": event_id}, {"$set": found_event})
+
+    column = db[DB_NAME]["feedback"]
+    column.insert(form_dict)
+
+    return feedback_id
+
+    #update feedback column some other time
