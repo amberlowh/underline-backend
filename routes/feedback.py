@@ -47,3 +47,9 @@ async def add_feedback(form: feedbackModel.registration_form):
 
     # return response in reponse model
     return feedbackModel.registration_response(feedback_id=feedback_id)
+
+@router.get("/feedback/{feedback_id}", response_model=feedbackModel.Feedbacks, status_code=201)
+async def get_feedback(feedback_id):
+    db = get_database()
+    feedback_data = await utils.get_feedback(feedback_id, db)
+    return feedbackModel.Feedbacks(**feedback_data)
