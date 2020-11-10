@@ -35,7 +35,7 @@ async def register_event(form: models.registration_form):
     return models.registration_response(event_id=event_id)
 
 
-@router.get("/users/{event_id}", response_model=models.Events, status_code=201)
+@router.get("/users/{event_id}", response_model=models.Event, status_code=201)
 async def get_event(event_id):
     db = get_database()
     event_data = await utils.get_event(event_id, db)
@@ -52,7 +52,7 @@ async def get_event(event_id):
 async def get_event_by_status(event_id):
     db = get_database()
     event_status = await utils.get_event_by_status(event_id, db)
-    #  return models.Events(**event_status)
+    #  return models.Event(**event_status)
     return event_status
 
 
