@@ -24,8 +24,8 @@ async def delete_feedback(event_id, feedback_id, db):
                             detail="Feedback ID not found in the provided event")
                             
     column.update_one({"_id": event_id}, {"$set": found_event})
-
-    def add_upvote_to_feedback(feedback_id, db):
-        #addupvote
-        collection = db[DB_NAME]["feedback"]
-        collection.update_one({"_id": feedback_id}, {"$inc": {"upvotes": 1}})
+#not async def?
+def add_upvote_to_feedback(feedback_id, db):
+    #addupvote
+    collection = db[DB_NAME]["feedback"]
+    collection.update_one({"_id": feedback_id}, {"$inc": {"upvotes": 1}})

@@ -28,17 +28,16 @@ async def delete_event(event_id, feedback_id):
 
     # prevent console error
     return Response(status_code=204) # https://github.com/tiangolo/fastapi/issues/717#issuecomment-583826657
-"""???doesnt need endpoint???
-@router.add_upvote{
-    "/feedback/???/{event_id}/{feedback_id}",
-    #description=
-    #summary=
-    #tags=
+#does need endpoint
+@router.put{
+    "/feedback/add-upvote/{feedback_id}}",
+    description=docs.add_upvote_desc
+    summary=docs.add_upvote_summ
+    tags=["Feedback"]
     status_code=200,
-
 }
-"""
-async def add_upvote_to_feedback(event_id, feedback_id):                   
+
+async def add_upvote_to_feedback(feedback_id):                   
 
     # get DB Database
     db = get_database()
