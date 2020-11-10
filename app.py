@@ -5,8 +5,6 @@ from routes.users import router as users_router
 from routes.events import router as events_router
 from routes.feedback import router as feedback_router
 
-app = FastAPI()
-
 @app.get("/")
 def index():
     return {"Hello": "World"}
