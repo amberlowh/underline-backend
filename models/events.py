@@ -2,7 +2,6 @@ from pydantic import EmailStr, BaseModel
 from typing import List
 from models import users as models
 from enum import Enum, auto
-from datetime import datetime
 
 
 class AutoName(Enum):
@@ -30,12 +29,10 @@ class Location(BaseModel):
 
 
 
-# incomplete
-# TODO: fix this name to be single event (doesnt make sense for plural)
-class Events(BaseModel):
+class Event(BaseModel):
     title: str
     description: str
-    date: datetime
+    date: str
     tag: TagEnum
     location: Location
     max_capacity: int
@@ -50,7 +47,7 @@ class Events(BaseModel):
     # TODO: think about how to handle expiration based on dates
 
 
-class registration_form(Events):
+class registration_form(Event):
     pass
 
 
@@ -59,8 +56,8 @@ class registration_response(BaseModel):
 
     
 class events_by_location_response(BaseModel):
-    events: List[Events]
+    events: List[Event]
 
 
 class get_all_events_by_status_response(BaseModel):
-    events: List[Events]
+    events: List[Event]

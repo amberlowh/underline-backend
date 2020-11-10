@@ -35,11 +35,11 @@ async def register_event(form: models.registration_form):
     return models.registration_response(event_id=event_id)
 
 
-@router.get("/users/{event_id}", response_model=models.Events, status_code=201)
+@router.get("/users/{event_id}", response_model=models.Event, status_code=201)
 async def get_event(event_id):
     db = get_database()
     event_data = await utils.get_event(event_id, db)
-    return models.Events(**event_data)
+    return models.Event(**event_data)
 
 
 # TODO: fix this once everything else is implemented and status is relevant
@@ -52,7 +52,7 @@ async def get_event(event_id):
 async def get_event_by_status(event_id):
     db = get_database()
     event_status = await utils.get_event_by_status(event_id, db)
-    #  return models.Events(**event_status)
+    #  return models.Event(**event_status)
     return event_status
 
 
@@ -70,9 +70,9 @@ async def get_event_by_status(event_id):
     tags=["Events"],
     status_code=201,
 )
-async def events_by_location(lat: str, lon: str, radius: int = 10):
+async def events_by_location(lat: float, lon: float, radius: int = 10):
 
-    if not lat or not lon:
+    if not (lat and lon):
         raise HTTPException(status_code=400, detail="Missing coordinate(s)")
 
     db = get_database()

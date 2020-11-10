@@ -18,10 +18,9 @@ def get_user_registration_form():
 
 
 def check_user_register_response_valid(response):
-    valid = True
-    valid = valid and response.status_code == 201
-    valid = valid and "user_id" in response.json()
-    return valid
+    test1 = response.status_code == 201
+    test2 = "user_id" in response.json()
+    return all([test1, test2])
 
 
 # used to test "/users/register"
@@ -31,7 +30,10 @@ class TestUserRegister:
         user_data = get_user_registration_form()
         # send request to test client
         response = client.post("/users/register", json=user_data)
+<<<<<<< HEAD
         
+=======
+>>>>>>> origin/testing-first-pass
         # check that response is good
         assert check_user_register_response_valid(response)
 
@@ -40,3 +42,9 @@ class TestUserRegister:
         response = client.post("/users/register", json={})
         # check that response is good
         assert not check_user_register_response_valid(response)
+
+
+def test_find_user_success(registered_user):
+    params = {"email": registered_user.get("email")}
+    response = client.get("/users/find", params=params)
+    assert response.status_code == 201
