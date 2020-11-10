@@ -2,7 +2,7 @@ import uuid
 from starlette.exceptions import HTTPException
 from config.db import get_database
 import logging
-DB_NAME = "underline"
+from config.db import get_db_name
 
 
 async def generate_id():
@@ -20,7 +20,7 @@ async def register_user(form, db):
     form_dict["_id"] = user_id
 
     # create column for insertion in db
-    column = db[DB_NAME]["users"]
+    column = db[get_db_name()]["users"]
 
     # insert id into column
     column.insert_one(form_dict)
@@ -36,7 +36,7 @@ async def register_user(form, db):
 
 async def get_user_info(email, db):
     #why is it email, db ... commas?
-    column = db[DB_NAME]["users"]
+    column = db[get_db_name()]["users"]
 
     #make query from identifier input
     query = {"email": email}
@@ -53,7 +53,7 @@ async def get_user_info(email, db):
 async def delete_user(email, db):
 
     # create column for insertion in db
-    column = db[DB_NAME]["users"]
+    column = db[get_db_name()]["users"]
 
     response = column.delete_one({"email": email})
     if response.deleted_count == 0:
@@ -63,6 +63,6 @@ async def delete_user(email, db):
 
 # Returns user dictionary
 async def get_user(user_id, db):
-    column = db[DB_NAME]["users"]
+    column = db[get_db_name()]["users"]
     user = column.find_one({"_id": user_id})
     return user
