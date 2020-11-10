@@ -78,10 +78,10 @@ async def events_by_location(lat: float, lon: float, radius: int = 10):
     if not (lat and lon):
         raise HTTPException(status_code=400, detail="Missing coordinate(s)")
     
-    if lat < 0 or lat > 90:
-        raise HTTPException(status_code=400, detail="Latitude values must be between 0 and 90 inclusive")
-    if lon < 0 or lon > 90:
-        raise HTTPException(status_code=400, detail="Longitude values must be between 0 and 90 inclusive")
+    if lat < -90 or lat > 90:
+        raise HTTPException(status_code=400, detail="Latitude values must be between -90 and 90 inclusive")
+    if lon < -90 or lon > 90:
+        raise HTTPException(status_code=400, detail="Longitude values must be between -90 and 90 inclusive")
 
     db = get_database()
 
