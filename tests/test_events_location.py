@@ -3,7 +3,6 @@ from fastapi.testclient import TestClient
 from app import app
 from datetime import datetime
 import pytest
-import json
 import logging
 
 client = TestClient(app)
