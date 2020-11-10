@@ -1,6 +1,7 @@
 import uuid
 from enum import Enum
 from config.db import get_database, get_db_name
+from starlette.exceptions import HTTPException
 from geopy import distance
 import logging
 

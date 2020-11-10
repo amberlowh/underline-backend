@@ -28,6 +28,17 @@ def registered_user():
     response = client.post("/users/register", json=user_data)
     return user_data
 
+@pytest.fixture(scope='module')
+def registered_event():
+    event_data = {"lat":"75", "lon":"50", "radius": 20}
+    response = client.get("/events/register", json=event_data)
+    return response
+
+@pytest.fixture(scope='module')
+def events_locations():
+    location_data  = {"lat":"75", "lon":"50", "radius": 20}
+    response = client.get("/events/location/", params=location_data)
+    return response
 
 @pytest.fixture(autouse=True)
 def run_around_tests():
