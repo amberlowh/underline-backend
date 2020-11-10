@@ -47,7 +47,7 @@ class Event(BaseModel):
     # TODO: think about how to handle expiration based on dates
 
 
-class registration_form(Events):
+class registration_form(Event):
     pass
 
 
@@ -56,8 +56,8 @@ class registration_response(BaseModel):
 
     
 class events_by_location_response(BaseModel):
-    events: List[Events]
+    events: List[Event]
 
 
 class get_all_events_by_status_response(BaseModel):
-    events: List[Events]
+    events: List[Event]
