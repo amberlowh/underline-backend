@@ -1,4 +1,4 @@
-starlette
+starlette==0.13.6
 fastapi
 uvicorn
 pydantic
@@ -9,3 +9,5 @@ geopy
 email-validator
 uvloop
 httptools
+pytest
+requests
