@@ -1,11 +1,10 @@
 import pytest
 import os
-from config.db import connect_to_mongo, close_connection_to_mongo
+from config.db import connect_to_mongo, close_connection_to_mongo, clear_test_collections
 from fastapi.testclient import TestClient
-from datetime import datetime
-
 from app import app
-
+import datetime
+import logging
 client = TestClient(app)
 
 
@@ -17,6 +16,7 @@ def pytest_configure(config):
 
 def pytest_unconfigure(config):
     os.environ['_called_from_test'] = 'False'
+    clear_test_collections()
     close_connection_to_mongo()
 
 
@@ -33,29 +33,10 @@ def registered_user():
 
 @pytest.fixture(scope='module')
 def registered_event():
-    event_data = {"lat": "75", "lon": "50", "radius": 20}
-    response = client.get("/events/register", json=event_data)
-    return response
-
-
-@pytest.fixture(scope='module')
-def events_locations():
-    location_data = {"lat": "75", "lon": "50", "radius": 20}
-    response = client.get("/events/location/", params=location_data)
-    return response
-
-
-@pytest.fixture(autouse=True)
-def run_around_tests():
-    yield
-
-
-@pytest.fixture(scope='module')
-def registered_event_data():
     json = {
         "title": "Test Event",
-        "description": "Test event",
-        "date": str(datetime.now()),
+        "description": "Test Description",
+        "date": str(datetime.datetime.now()),
         "tag": "sporting_events",
         "location": {
             "latitude": 75.0,
@@ -70,6 +51,51 @@ def registered_event_data():
         "status": "active",
         "creator_id": "0"
     }
-    response = client.post("/events/register", json=json)
-    assert response.status_code == 201
-    return json
+    event_response = client.post("/events/register", json=json)
+    assert event_response.status_code == 201
+
+    return {"event_json": json, "response_json": event_response.json()}
+
+
+@pytest.fixture(scope="module")
+def registered_feedback_data():
+    event_json = {
+        "title": "Test event feedback",
+        "description": "Test Description",
+        "date": str(datetime.datetime.now()),
+        "tag": "sporting_events",
+        "location": {
+            "latitude": 75.0,
+            "longitude": 75.0
+        },
+        "max_capacity": 10,
+        "public": False,
+        "attending": [],
+        "upvotes": 0,
+        "comment_ids": [],
+        "rating": 5.0,
+        "status": "active",
+        "creator_id": "0"
+    }
+    event_response = client.post("/events/register", json=event_json)
+    assert event_response.status_code == 201
+
+    # extract event ID from response json
+    event_id = event_response.json()["event_id"]
+
+    # now register feedback
+    feedback_json = {"event_id": event_id, "comment": "Test feedback comment"}
+
+    feedback_response = client.post("/feedback/add", json=feedback_json)
+    assert feedback_response.status_code == 201
+
+    # extract feedback_id from registration response json
+    feedback_id = feedback_response.json()["feedback_id"]
+
+    return {"feedback_id": feedback_id, "event_id": event_id}
+
+
+@pytest.fixture(autouse=True)
+def run_around_tests():
+    clear_test_collections()
+    yield

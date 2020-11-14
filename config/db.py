@@ -28,3 +28,8 @@ def connect_to_mongo():
 
 def close_connection_to_mongo():
     db.client.close()
+
+
+def clear_test_collections():
+    for collection in db.client["pytests"].list_collection_names():
+        collection.delete_many({})

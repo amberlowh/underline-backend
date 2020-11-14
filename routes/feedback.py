@@ -1,4 +1,3 @@
-
 from config.db import get_database
 from fastapi import APIRouter, Response
 
@@ -11,6 +10,7 @@ from starlette.exceptions import HTTPException
 
 router = APIRouter()
 
+
 @router.delete(
     "/feedback/delete/{event_id}/{feedback_id}",
     #description=
@@ -18,7 +18,7 @@ router = APIRouter()
     #tags=
     status_code=204,
 )
-async def delete_feedback(event_id, feedback_id):                   
+async def delete_feedback(event_id, feedback_id):
 
     # get DB Database
     db = get_database()
@@ -27,8 +27,11 @@ async def delete_feedback(event_id, feedback_id):
     await utils.delete_feedback(event_id, feedback_id, db)
 
     # prevent console error
-    return Response(status_code=204) # https://github.com/tiangolo/fastapi/issues/717#issuecomment-583826657
-   
+    return Response(
+        status_code=204
+    )  # https://github.com/tiangolo/fastapi/issues/717#issuecomment-583826657
+
+
 @router.post(
     "/feedback/add",
     response_model=feedbackModel.registration_response,
@@ -48,8 +51,11 @@ async def add_feedback(form: feedbackModel.registration_form):
     # return response in reponse model
     return feedbackModel.registration_response(feedback_id=feedback_id)
 
-@router.get("/feedback/{feedback_id}", response_model=feedbackModel.Feedbacks, status_code=201)
+
+@router.get("/feedback/{feedback_id}",
+            response_model=feedbackModel.Feedback,
+            status_code=201)
 async def get_feedback(feedback_id):
     db = get_database()
     feedback_data = await utils.get_feedback(feedback_id, db)
-    return feedbackModel.Feedbacks(**feedback_data)
+    return feedbackModel.Feedback(**feedback_data)
