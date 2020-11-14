@@ -35,7 +35,12 @@ async def register_event(form: models.registration_form):
     return models.registration_response(event_id=event_id)
 
 
-@router.get("/events/{event_id}", response_model=models.Event, status_code=201)
+@router.get("/events/{event_id}",
+            description=docs.get_event_desc,
+            summary=docs.get_event_summ,
+            tags=["Events"],
+            response_model=models.Event,
+            status_code=201)
 async def get_event(event_id):
     db = get_database()
     event_data = await utils.get_event(event_id, db)
@@ -45,9 +50,12 @@ async def get_event(event_id):
 
     return models.Event(**event_data)
 
+
 # TODO: fix this once everything else is implemented and status is relevant
 @router.get(
     "/events/status/{event_id}",
+    description=docs.get_event_by_status_desc,
+    summary=docs.get_event_by_status_summ,
     response_model=models.get_all_events_by_status_response,
     status_code=200,
     tags=["Events"],
@@ -58,12 +66,6 @@ async def get_event_by_status(event_id):
     #  return models.Event(**event_status)
     return event_status
 
-
-# FLOW TO CREATE ROUTE(endpoint):
-#  1. create model in models/users.py file
-#  2. write routing code in routes/users.py file (here)
-#  3. implement the actual method handling in utils/users.py file
-#  4. write docs in docs/users.py file and test!!
 
 @router.get(
     "/events/location/",
@@ -77,11 +79,15 @@ async def events_by_location(lat: float, lon: float, radius: int = 10):
 
     if not (lat and lon):
         raise HTTPException(status_code=400, detail="Missing coordinate(s)")
-    
+
     if lat < -90 or lat > 90:
-        raise HTTPException(status_code=400, detail="Latitude values must be between -90 and 90 inclusive")
+        raise HTTPException(
+            status_code=400,
+            detail="Latitude values must be between -90 and 90 inclusive")
     if lon < -90 or lon > 90:
-        raise HTTPException(status_code=400, detail="Longitude values must be between -90 and 90 inclusive")
+        raise HTTPException(
+            status_code=400,
+            detail="Longitude values must be between -90 and 90 inclusive")
 
     db = get_database()
 

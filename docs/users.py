@@ -20,3 +20,10 @@ Delete user from database based off of unique identifier
 delete_user_summ = """
 Delete User
 """
+
+find_user_by_email_desc = """
+Returns user data with matching email
+"""
+find_user_by_email_summ = """
+Find user by email
+"""

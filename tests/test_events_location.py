@@ -28,24 +28,24 @@ def check_event_locations_response_valid(response):
 
 
 class TestEventsLocation:
-    def test_events_location_success(self):
+    def test_events_location_success(self, registered_event):
         query_data = get_event_location_query(75, 75, 5)
         response = client.get("/events/location/", params=query_data)
 
         assert check_event_locations_response_valid(response)
 
-    def test_events_location_empty_data_failure(self):
+    def test_events_location_empty_data_failure(self, registered_event):
         response = client.get("/events/location/", params={})
 
         assert not check_event_locations_response_valid(response)
 
-    def test_events_location_no_events_failure(self):
+    def test_events_location_no_events_failure(self, registered_event):
         query_data = get_event_location_query(10, 10, 5)
         response = client.get("/events/location/", params=query_data)
 
         assert not check_event_locations_response_valid(response)
 
-    def test_events_location_invalid_lat_lon(self):
+    def test_events_location_invalid_lat_lon(self, registered_event):
         query_data = get_event_location_query(100, -5, 5)
         response = client.get("/events/location/", params=query_data)
 

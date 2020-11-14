@@ -1,4 +1,5 @@
 import time
+from tests.utils_for_tests import generate_uuid
 from fastapi.testclient import TestClient
 from app import app
 import pytest
@@ -24,4 +25,13 @@ class TestDeleteFeedback:
 
         # Attempt to get the deleted feedback, should fail
         response = client.get(f"/feedback/{feedback_id}")
+        assert response.status_code == 404
+
+    def test_delete_feedback_nonexistent_event_failure(self):
+        # get fake event id and feedback id
+        event_id = generate_uuid()
+        feedback_id = generate_uuid()
+
+        # attempt a delete expecting failure
+        response = client.delete(f"/feedback/delete/{event_id}/{feedback_id}")
         assert response.status_code == 404

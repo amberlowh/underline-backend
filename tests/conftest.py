@@ -1,5 +1,6 @@
 import pytest
 import os
+import uuid
 from config.db import connect_to_mongo, close_connection_to_mongo, clear_test_collections
 from fastapi.testclient import TestClient
 from app import app
@@ -77,6 +78,7 @@ def registered_feedback_data():
         "status": "active",
         "creator_id": "0"
     }
+    # send request to register event
     event_response = client.post("/events/register", json=event_json)
     assert event_response.status_code == 201
 
@@ -97,5 +99,5 @@ def registered_feedback_data():
 
 @pytest.fixture(autouse=True)
 def run_around_tests():
-    clear_test_collections()
     yield
+    clear_test_collections()

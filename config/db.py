@@ -31,5 +31,6 @@ def close_connection_to_mongo():
 
 
 def clear_test_collections():
-    for collection in db.client["pytests"].list_collection_names():
-        collection.delete_many({})
+    test_db = db.client["pytest"]
+    for collection in test_db.list_collection_names():
+        test_db[collection].delete_many({})

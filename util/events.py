@@ -47,6 +47,7 @@ async def get_event(event_id, db):
 
     return event
 
+
 async def events_by_location(origin, radius, db):
     def within_radius(event):
         event_location = event.get("location", {})

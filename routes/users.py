@@ -56,24 +56,13 @@ async def delete_user(email: str):
     await utils.delete_user(email, db)
 
 
-@router.get("/users/find", response_model=models.Users, status_code=201)
+@router.get("/users/find",
+            response_model=models.Users,
+            description=docs.find_user_by_email_desc,
+            summary=docs.find_user_by_email_summ,
+            tags=["Users"],
+            status_code=201)
 async def get_user(email: EmailStr):
     db = get_database()
     user_data = await utils.get_user_info(email, db)
     return models.Users(**user_data)
-
-
-# FLOW TO CREATE ROUTE(endpoint):
-#  1. create model in models/users.py file
-#  2. write routing code in routes/users.py file (here)
-#  3. implement the actual method handling in utils/users.py file
-#  4. write docs in docs/users.py file and test!!
-
-#  delete user - @eduardo
-
-#  get user data - @danny
-
-#  update user - @clement
-
-#  login - @lazaro
-#  - implement bcrypt ON the model class

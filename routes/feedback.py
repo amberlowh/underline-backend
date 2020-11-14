@@ -3,7 +3,7 @@ from fastapi import APIRouter, Response
 
 from models import events as eventModel
 from models import feedback as feedbackModel
-#from docs import feedback as docs
+from docs import feedback as docs
 import logging
 import util.feedback as utils
 from starlette.exceptions import HTTPException
@@ -13,9 +13,9 @@ router = APIRouter()
 
 @router.delete(
     "/feedback/delete/{event_id}/{feedback_id}",
-    #description=
-    #summary=
-    #tags=
+    description=docs.delete_feedback_desc,
+    summary=docs.delete_feedback_summ,
+    tags=["Feedback"],
     status_code=204,
 )
 async def delete_feedback(event_id, feedback_id):
@@ -35,9 +35,9 @@ async def delete_feedback(event_id, feedback_id):
 @router.post(
     "/feedback/add",
     response_model=feedbackModel.registration_response,
-    #description=docs.registration_desc,
-    #summary=docs.registration_summ,
-    #tags=["Users"],
+    description=docs.register_feedback_desc,
+    summary=docs.register_feedback_summ,
+    tags=["Feedback"],
     status_code=201,
 )
 async def add_feedback(form: feedbackModel.registration_form):
@@ -53,6 +53,9 @@ async def add_feedback(form: feedbackModel.registration_form):
 
 
 @router.get("/feedback/{feedback_id}",
+            description=docs.get_feedback_by_id_desc,
+            summary=docs.get_feedback_by_id_summ,
+            tags=["Feedback"],
             response_model=feedbackModel.Feedback,
             status_code=201)
 async def get_feedback(feedback_id):
