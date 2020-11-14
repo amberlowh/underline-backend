@@ -43,9 +43,9 @@ async def register_event(form, db):
 # Returns event dictionary
 async def get_event(event_id, db):
     column = db[get_db_name()]["events"]
-    user = column.find_one({"_id": event_id})
-    return user
+    event = column.find_one({"_id": event_id})
 
+    return event
 
 async def events_by_location(origin, radius, db):
     def within_radius(event):
