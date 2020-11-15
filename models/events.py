@@ -28,7 +28,6 @@ class Location(BaseModel):
     longitude: float
 
 
-
 class Event(BaseModel):
     title: str
     description: str
@@ -54,10 +53,22 @@ class registration_form(Event):
 class registration_response(BaseModel):
     event_id: str
 
-    
-class events_by_location_response(BaseModel):
+
+class ListOfEvents(BaseModel):
     events: List[Event]
 
 
-class get_all_events_by_status_response(BaseModel):
-    events: List[Event]
+class events_by_location_response(ListOfEvents):
+    pass
+
+
+class get_all_events_by_status_response(ListOfEvents):
+    pass
+
+
+class get_all_events_by_status_response(ListOfEvents):
+    pass
+
+
+class all_events_response(ListOfEvents):
+    pass

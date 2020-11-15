@@ -26,3 +26,10 @@ Returns an event with matching event ID and matching status tag enum
 get_event_by_status_summ = """
 Get event by ID and status
 """
+
+get_all_events_desc = """
+Returns all of the events in the database
+"""
+get_all_events_summ = """
+Get all events
+"""

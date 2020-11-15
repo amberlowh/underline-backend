@@ -80,3 +80,9 @@ async def get_event_by_status(event_id, db):
         raise HTTPException(status_code=404,
                             detail="Event with given ID not found")
     return {"events": all_events_list}
+
+
+async def get_all_events(db):
+    collection = db[get_db_name()]["events"]
+    events = list(collection.find())
+    return {"events": events}

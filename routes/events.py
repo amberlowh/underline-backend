@@ -76,10 +76,8 @@ async def get_event_by_status(event_id):
     status_code=201,
 )
 async def events_by_location(lat: float, lon: float, radius: int = 10):
-
     if not (lat and lon):
         raise HTTPException(status_code=400, detail="Missing coordinate(s)")
-
     if lat < -90 or lat > 90:
         raise HTTPException(
             status_code=400,
@@ -88,11 +86,19 @@ async def events_by_location(lat: float, lon: float, radius: int = 10):
         raise HTTPException(
             status_code=400,
             detail="Longitude values must be between -90 and 90 inclusive")
-
     db = get_database()
-
     origin = (lat, lon)
-
     valid_events = await utils.events_by_location(origin, radius, db)
-
     return models.events_by_location_response(events=valid_events)
+
+
+@router.get("/events/find/all",
+            description=docs.get_all_events_desc,
+            summary=docs.get_all_events_summ,
+            tags=["Events"],
+            response_model=models.all_events_response,
+            status_code=200)
+async def get_all_events():
+    db = get_database()
+    events = await utils.get_all_events(db)
+    return events
