@@ -14,6 +14,7 @@ class TagEnum(AutoName):
     food_events = auto()
     art_expo = auto()
     music_show = auto()
+    restroom = auto()
 
 
 class StatusEnum(AutoName):
