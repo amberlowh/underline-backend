@@ -13,6 +13,10 @@ def check_get_all_events_response_valid(response, events_registered):
     try:
         assert response.status_code == 200
         assert len(response.json()["events"]) == events_registered
+        events = [event for event in response.json()["events"]]
+        # WARNING XXX:  this is a very stupid unreadable piece of code.
+        #               do not copy this. it's just a space saver.
+        assert all(["event_id" in event for event in events])
         return True
     except:
         return False

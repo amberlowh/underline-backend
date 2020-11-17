@@ -1,5 +1,5 @@
 from pydantic import EmailStr, BaseModel
-from typing import List
+from typing import List, Optional
 from models import users as models
 from enum import Enum, auto
 
@@ -43,6 +43,7 @@ class Event(BaseModel):
     rating: float
     status: StatusEnum
     creator_id: str
+    event_id: Optional[str]
     # TODO: add landmark flag OR extend into own class
     # TODO: think about how to handle expiration based on dates
 

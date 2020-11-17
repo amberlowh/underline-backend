@@ -85,4 +85,10 @@ async def get_event_by_status(event_id, db):
 async def get_all_events(db):
     collection = db[get_db_name()]["events"]
     events = list(collection.find())
+
+    # change the "_id" field to a "event_id" field
+    for event in events:
+        event["event_id"] = event["_id"]
+        del event["_id"]
+
     return {"events": events}
